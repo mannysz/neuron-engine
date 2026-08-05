@@ -1,0 +1,14 @@
+{
+  "name": "neuron-engine",
+  "version": "1.0.0",
+  "description": "Progressive Non-Linear Context Graph (PNG-RAG) memory engine for AI coding agents",
+  "skills": [
+    "skills/neuron-engine"
+  ],
+  "commands": [
+    "commands/neuron"
+  ],
+  "hooks": [
+    "hooks.json"
+  ]
+}

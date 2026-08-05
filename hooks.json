@@ -1,0 +1,18 @@
+{
+  "neuron-auto-logger": {
+    "Stop": [
+      {
+        "type": "command",
+        "command": "bin/auto-log.js",
+        "timeout": 15
+      }
+    ],
+    "PostInvocation": [
+      {
+        "type": "command",
+        "command": "bin/auto-log.js",
+        "timeout": 15
+      }
+    ]
+  }
+}
