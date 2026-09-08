@@ -7,6 +7,16 @@ It solves a fundamental problem: **context degradation over long coding sessions
 
 ---
 
+## 🌟 Why Use `neuron-engine`?
+
+* **Eliminate Context Bloat**: Stop paying API costs for an AI that has to scan hundreds of pages of past chat transcripts. `neuron-engine` isolates exactly what the agent needs via semantic RAG, keeping prompts lightning fast and hyper-focused.
+* **Instant Session Resumption**: Never waste the first 5 minutes of a new session explaining your architecture, your tech stack, or where you left off. The agent wakes up already knowing.
+* **100% Local & No Vendor Lock-In**: Your agent's brain isn't trapped in a proprietary cloud database. Every memory, rule, and log is stored as plain Markdown and JSON directly inside your local `.memory/` folder.
+* **Auditable & Editable**: If the AI hallucinates a memory or learns a bad habit, you can literally open `.memory/memories.json` in your code editor and delete it. You have total sovereign control over its knowledge graph.
+* **Passive Auto-Logging**: You don't have to constantly command the AI to "remember this." The engine automatically hooks into the agent's lifecycle, quietly logging your prompts and file edits in the background as you code.
+
+---
+
 ## 📦 Prerequisites & Installation
 
 ### Prerequisite: `qmd`
