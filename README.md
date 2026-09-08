@@ -14,6 +14,8 @@ It solves a fundamental problem: **context degradation over long coding sessions
 * **100% Local & No Vendor Lock-In**: Your agent's brain isn't trapped in a proprietary cloud database. Every memory, rule, and log is stored as plain Markdown and JSON directly inside your local `.memory/` folder.
 * **Auditable & Editable**: If the AI hallucinates a memory or learns a bad habit, you can literally open `.memory/memories.json` in your code editor and delete it. You have total sovereign control over its knowledge graph.
 * **Passive Auto-Logging**: You don't have to constantly command the AI to "remember this." The engine automatically hooks into the agent's lifecycle, quietly logging your prompts and file edits in the background as you code.
+* **Zero Token Cost State Management**: Persisting, restructuring, and offloading memories (`synapsis`, `dream`, `forget`) executes entirely locally on your machine. It doesn't ping the LLM or consume extra tokens just to organize its thoughts.
+* **Universal Bash Compatibility**: Because the entire engine is driven by simple CLI commands, it works instantly with *any* agent or LLM harness that has terminal access (Antigravity, Claude Code, Aider, OpenHands, etc.). No complex API wrappers required.
 
 ---
 
