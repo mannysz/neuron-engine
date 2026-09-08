@@ -17,14 +17,19 @@ It prevents context degradation over long coding sessions by maintaining a non-l
 
 ## 📦 Installation
 
-### Global Antigravity Plugin
-Clone or copy into your global Antigravity plugins directory:
+### 1. Via Antigravity CLI (Recommended)
+You can install this plugin globally directly from GitHub using the `agy` CLI:
 ```bash
-mkdir -p ~/.gemini/config/plugins
-cp -r neuron-engine ~/.gemini/config/plugins/neuron-engine
+agy plugin install https://github.com/mannysz/neuron-engine
 ```
 
-### Local Workspace Plugin
+### 2. Manual Global Install
+Clone or copy into your global Antigravity plugins directory:
+```bash
+git clone https://github.com/mannysz/neuron-engine ~/.gemini/config/plugins/neuron-engine
+```
+
+### 3. Local Workspace Plugin
 Copy into your project's `.plugins/` folder:
 ```bash
 cp -r neuron-engine ./.plugins/neuron-engine
