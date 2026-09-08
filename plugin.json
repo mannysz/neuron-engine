@@ -10,5 +10,8 @@
   ],
   "hooks": [
     "hooks.json"
+  ],
+  "rules": [
+    "rules/neuron-engine.md"
   ]
 }

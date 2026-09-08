@@ -1,6 +1,6 @@
 ---
 name: neuron-engine
-description: Progressive Non-Linear Context Graph (PNG-RAG) memory engine for AI coding agents.
+description: CRITICAL MEMORY ENGINE. Read this skill on session start or when asked to recall past context. Contains instructions for running `neuron awake` to restore working memory.
 ---
 
 # Neuron Engine Skill
