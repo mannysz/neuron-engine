@@ -62,7 +62,24 @@ The plugin automatically binds to the agent's lifecycle events (`PostInvocation`
 
 ---
 
-## 🚀 CLI Usage & Commands
+## 🚀 CLI & Bang-Command Usage
+
+`neuron` is a native CLI binary that runs in <15ms with zero token cost.
+
+### ⚡ Running in Antigravity (`agy`) via Bang-Commands (`!`)
+When working in the `agy` chat prompt, use the `!` shell escape to execute memory operations directly without burning LLM tokens or waiting on model latency:
+
+```bash
+# In the agy prompt:
+!neuron awake                               # Ingest active context graph & dashboard
+!neuron remember feature-auth               # Switch active workstream
+!neuron synapsis --summary "Wanted: ... | Done: ... | Result: ..."  # Create milestone marker
+!neuron list                                # List all memory nodes
+!neuron search "OAuth token"                # Deep hybrid search
+```
+
+### 💻 Standard Terminal Usage
+You can run the same commands directly in your terminal:
 
 ```bash
 # Ingest active L1 memories, daily log tail, and Executive Dashboard

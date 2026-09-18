@@ -5,9 +5,6 @@
   "skills": [
     "skills/neuron-engine"
   ],
-  "commands": [
-    "commands/neuron"
-  ],
   "hooks": [
     "hooks.json"
   ],
