@@ -1,0 +1,36 @@
+{
+  "name": "neuron-engine",
+  "version": "1.1.0",
+  "description": "Local-first 3-tier cognitive memory engine (Progressive Non-Linear Context Graph / hybrid RAG) for AI coding agents — compatible with Claude Code, OpenAI Codex CLI, pi, and Antigravity.",
+  "main": "bin/neuron.js",
+  "bin": {
+    "neuron": "bin/neuron"
+  },
+  "scripts": {
+    "test": "node --test test/*.test.mjs"
+  },
+  "keywords": [
+    "ai-agents",
+    "memory-engine",
+    "context-graph",
+    "rag",
+    "claude-code",
+    "codex",
+    "pi-package",
+    "antigravity"
+  ],
+  "pi": {
+    "extensions": [
+      "./extensions/neuron-pi.ts"
+    ],
+    "skills": [
+      "./skills/neuron-engine"
+    ]
+  },
+  "author": "Manny de Souza",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mannysz/neuron-engine.git"
+  }
+}

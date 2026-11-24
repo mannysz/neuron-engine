@@ -1,113 +1,148 @@
-# `neuron-engine` 🧠⚡
-> Progressive Non-Linear Context Graph (PNG-RAG) Memory Engine for AI Coding Agents
+# `neuron-engine`
 
-`neuron-engine` is a high-performance, persistent memory engine designed for AI coding agents like Google Antigravity. 
+**Local-first 3-tier cognitive memory engine (Progressive Non-Linear Context Graph / hybrid RAG) for AI coding agents.**
 
-It solves a fundamental problem: **context degradation over long coding sessions**. By maintaining a non-linear graph of memories, daily episodic logs, and local vector RAG, it ensures your AI agent never "forgets" architectural decisions, past bugs, or user preferences, no matter how long the project runs.
-
----
-
-## 🌟 Why Use `neuron-engine`?
-
-* **Eliminate Context Bloat**: Stop paying API costs for an AI that has to scan hundreds of pages of past chat transcripts. `neuron-engine` isolates exactly what the agent needs via semantic RAG, keeping prompts lightning fast and hyper-focused.
-* **Instant Session Resumption**: Never waste the first 5 minutes of a new session explaining your architecture, your tech stack, or where you left off. The agent wakes up already knowing.
-* **100% Local & No Vendor Lock-In**: Your agent's brain isn't trapped in a proprietary cloud database. Every memory, rule, and log is stored as plain Markdown and JSON directly inside your local `.memory/` folder.
-* **Auditable & Editable**: If the AI hallucinates a memory or learns a bad habit, you can literally open `.memory/memories.json` in your code editor and delete it. You have total sovereign control over its knowledge graph.
-* **Passive Auto-Logging**: You don't have to constantly command the AI to "remember this." The engine automatically hooks into the agent's lifecycle, quietly logging your prompts and file edits in the background as you code.
-* **Zero Token Cost State Management**: Persisting, restructuring, and offloading memories (`synapsis`, `dream`, `forget`) executes entirely locally on your machine. It doesn't ping the LLM or consume extra tokens just to organize its thoughts.
-* **Universal Bash Compatibility**: Because the entire engine is driven by simple CLI commands, it works instantly with *any* agent or LLM harness that has terminal access (Antigravity, Claude Code, Aider, OpenHands, etc.). No complex API wrappers required.
+Compatible with **Claude Code**, **OpenAI Codex CLI**, **`pi` coding agent**, **Antigravity (`agy`)**, and any terminal-capable agent harness.
 
 ---
 
-## 📦 Prerequisites & Installation
+## Problem
 
-### Prerequisite: `qmd`
-For the semantic vector search to function correctly, `neuron-engine` requires the `qmd` CLI binary to be installed on your system.
-```bash
-# Example (if qmd is available via homebrew, adjust to your actual qmd installation method)
-brew install qmd
+Long-horizon engineering sessions with LLM coding agents fail in predictable ways:
+
+1. **Context rot & compaction loss:** Linear chat transcripts accumulate stale tool output and lose architectural decisions across compactions and session restarts.
+2. **Topic entanglement:** Real engineering work is non-linear—switching between a production incident, a refactor, and a schema migration inside one linear thread pollutes prompt context.
+3. **Opaque, vendor-locked memory:** Hosted memory services hide state behind proprietary APIs, making it impossible to inspect, diff, version, or correct what an agent believes.
+
+`neuron-engine` solves this with a local, zero-token-cost CLI and plain-file memory graph stored directly in `./.memory/`.
+
+---
+
+## Architecture: 3-Tier Cognitive Memory Hierarchy
+
+```text
++-------------------------------------------------------------------------+
+|  L1: Working Consciousness (Active Prompt Focus)                        |
+|  - Active topic pointer (`neuron remember <topic>`)                     |
+|  - Loaded on session start via `neuron awake`                           |
++-----------------------------------+-------------------------------------+
+                                    |
+                                    v
++-------------------------------------------------------------------------+
+|  L2: Non-Linear Context Graph  (./.memory/memories.json)                |
+|  - Topic nodes with active/archived state & condensed summaries         |
+|  - Exact file/line fragment pointers into L3 logs (`neuron synapsis`)   |
+|  - Consolidated locally with zero LLM calls (`neuron dream`)            |
++-----------------------------------+-------------------------------------+
+                                    |
+                                    v
++-------------------------------------------------------------------------+
+|  L3: Episodic Storage & Hybrid RAG  (./.memory/logs/ & MEMORY.md)       |
+|  - Append-only daily Markdown logs (`YYYY-MM-DD.md`)                    |
+|  - Passive lifecycle auto-logging (`bin/auto-log.js` for Claude / agy)  |
+|  - Executive Dashboard (`MEMORY.md`, capped <500 lines)                 |
+|  - Hybrid BM25 + vector search via `qmd` (graceful text fallback)       |
++-------------------------------------------------------------------------+
 ```
-*(Note: If `qmd` is missing, the engine will gracefully degrade to basic text search, but semantic recall will be heavily impaired).*
 
-### 1. Via Antigravity CLI (Recommended)
-You can install this plugin globally directly from GitHub:
+### Design Principles
+- **Zero-LLM state management:** `awake`, `remember`, `synapsis`, `dream`, and `forget` execute locally in <15ms without spending model tokens.
+- **100% local & auditable:** All state lives in plain JSON and Markdown inside `./.memory/`. Any incorrect memory can be edited or deleted directly in your editor.
+- **Harness-agnostic CLI:** Works natively across Claude Code, OpenAI Codex CLI, `pi`, Antigravity, or any shell-enabled agent.
+- **Graceful degradation:** Uses `qmd` for hybrid vector + BM25 search when installed, and automatically falls back to local graph + log search when absent.
+
+---
+
+## Installation
+
+### 1. Install the `neuron` CLI (Standalone — Works Everywhere)
+```bash
+git clone https://github.com/mannysz/neuron-engine.git ~/.local/share/neuron-engine
+chmod +x ~/.local/share/neuron-engine/bin/neuron ~/.local/share/neuron-engine/bin/neuron.js ~/.local/share/neuron-engine/bin/auto-log.js
+mkdir -p ~/.local/bin
+ln -sf ~/.local/share/neuron-engine/bin/neuron ~/.local/bin/neuron
+```
+Ensure `~/.local/bin` is on your `PATH`, then verify:
+```bash
+neuron help
+```
+
+### 2. Optional: Semantic Vector Search (`qmd`)
+For hybrid vector + BM25 recall over `.memory/logs/*.md`, install [`qmd`](https://github.com/tobi/qmd). Without `qmd`, `neuron search` gracefully falls back to L2 graph + local log matching.
+
+---
+
+## Agent Harness Integrations
+
+### Claude Code
+1. Copy the protocol snippet from [`integrations/claude-code/CLAUDE.md`](integrations/claude-code/CLAUDE.md) into your project's `CLAUDE.md` (or `~/.claude/CLAUDE.md`).
+2. *(Optional)* Enable passive episodic logging on every turn by adding the `Stop` hook from [`integrations/claude-code/settings.json`](integrations/claude-code/settings.json) to `.claude/settings.json` (pointing to your local `bin/auto-log.js`). `auto-log.js` natively parses Claude Code's `cwd` and `transcript_path` JSONL format.
+
+### OpenAI Codex CLI
+Copy the protocol snippet from [`integrations/codex/AGENTS.md`](integrations/codex/AGENTS.md) into your repository's `AGENTS.md`. Codex CLI executes `neuron awake`, `neuron remember`, `neuron synapsis`, and `neuron search` directly through its shell tool.
+
+### `pi` Coding Agent
+Install directly as a `pi` package (bundles the `extensions/neuron-pi.ts` lifecycle extension and `skills/neuron-engine` skill):
+```bash
+pi install git:github.com/mannysz/neuron-engine
+```
+
+### Antigravity (`agy`)
+Install as a global plugin (auto-registers `hooks.json`, `skills/neuron-engine`, and `rules/neuron-engine.md`):
 ```bash
 agy plugin install https://github.com/mannysz/neuron-engine
 ```
-
-### 2. Manual Global Install
-Clone directly into your global Antigravity plugins directory:
+In the `agy` chat prompt, you can also invoke `neuron` directly with zero LLM tokens using `!`:
 ```bash
-git clone https://github.com/mannysz/neuron-engine ~/.gemini/config/plugins/neuron-engine
-```
-
-### 3. Local Workspace Install
-Copy into your project's `.plugins/` folder to keep it isolated to one repository:
-```bash
-git clone https://github.com/mannysz/neuron-engine ./.plugins/neuron-engine
+!neuron awake
+!neuron remember auth-refactor
+!neuron list
 ```
 
 ---
 
-## 🏛️ How It Works: Internals
-
-`neuron-engine` manages memory across a **3-Tier Cognitive Hierarchy**:
-
-1. **L1 (Working Consciousness)**: Active memory focus (set via `neuron remember <topic>`). This keeps the highest-priority context in the agent's immediate focus window.
-2. **L2 (Non-Linear Context Graph)**: A structured `./.memory/memories.json` file. It tracks active topics, creates condensed summary nodes, and holds exact line fragment pointers into your daily logs.
-3. **L3 (Episodic Storage & RAG)**: Append-only Markdown daily logs (`./.memory/logs/YYYY-MM-DD.md`), an Executive Dashboard (`./.memory/MEMORY.md`), and hybrid QMD vector/BM25 search embeddings.
-
-**Automatic Session Hook (`hooks.json`)**: 
-The plugin automatically binds to the agent's lifecycle events (`PostInvocation` and `Stop`). It silently extracts the user's prompts, the tools executed, and the files modified, writing them into the daily episodic logs without manual effort.
-
----
-
-## 🚀 CLI & Bang-Command Usage
-
-`neuron` is a native CLI binary that runs in <15ms with zero token cost.
-
-### ⚡ Running in Antigravity (`agy`) via Bang-Commands (`!`)
-When working in the `agy` chat prompt, use the `!` shell escape to execute memory operations directly without burning LLM tokens or waiting on model latency:
+## CLI Reference
 
 ```bash
-# In the agy prompt:
-!neuron awake                               # Ingest active context graph & dashboard
-!neuron remember feature-auth               # Switch active workstream
-!neuron synapsis --summary "Wanted: ... | Done: ... | Result: ..."  # Create milestone marker
-!neuron list                                # List all memory nodes
-!neuron search "OAuth token"                # Deep hybrid search
-```
-
-### 💻 Standard Terminal Usage
-You can run the same commands directly in your terminal:
-
-```bash
-# Ingest active L1 memories, daily log tail, and Executive Dashboard
+# Hydrate active L1 focus, L2 context graph, recent daily log tail, and MEMORY.md
 neuron awake
 
-# Focus active memory on a specific feature or workstream
-neuron remember feature-auth
+# Switch or initialize an active L1 memory workstream
+neuron remember <topic>
 
-# Record a completed work fragment using the 3-part formula
-neuron synapsis --summary "Wanted: Implement OAuth2 login | Done: Added JWT verification & routes | Result: Auth tests passing"
+# Record a structured milestone fragment (Wanted | Done | Result)
+neuron synapsis --summary "Wanted: Rotate JWT keys | Done: Added JWKS cache | Result: All 24 auth tests pass"
 
-# Condense fragment summaries into L2 context nodes and re-index vector embeddings
+# Condense recent fragments into L2 summaries and refresh qmd vector index
 neuron dream
 
-# Offload a completed feature from active L1 focus
-neuron forget feature-auth
+# Offload a completed topic from active L1 focus (preserved in L2/L3)
+neuron forget <topic>
 
-# Perform hybrid vector & BM25 search over memory logs
-neuron search "OAuth token secret"
+# Hybrid L2 graph + vector/log search
+neuron search "<query>"
 
-# List all active/archived memory nodes
+# List all active and archived memory nodes
 neuron list
 
-# Inspect exact JSON structure for a specific memory node
-neuron show feature-auth
+# Inspect raw JSON for a single memory node
+neuron show <topic>
 ```
 
 ---
 
-## 📄 License
-MIT License. Free for open source and commercial use.
+## Testing
+
+Zero external test dependencies—uses Node's built-in test runner (`node --test`):
+
+```bash
+npm test
+```
+
+Covers the full L1/L2/L3 CLI lifecycle (`test/neuron-cli.test.mjs`), Claude Code and Antigravity JSONL passive auto-log hooks, and the `pi` coding agent extension (`test/neuron-pi.test.mjs`).
+
+---
+
+## License
+
+MIT

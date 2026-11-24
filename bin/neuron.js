@@ -2,7 +2,7 @@
 
 const fs = require('fs');
 const path = require('path');
-const { execSync } = require('child_process');
+const { execFileSync } = require('child_process');
 
 function findWorkspaceRoot() {
   let current = process.cwd();
@@ -101,7 +101,7 @@ function needsConsolidation() {
 
 function runQmdIndex() {
   try {
-    execSync('qmd index .memory', { stdio: 'ignore', cwd: WORKSPACE_ROOT });
+    execFileSync('qmd', ['index', '.memory'], { stdio: 'ignore', cwd: WORKSPACE_ROOT });
     return true;
   } catch (e) {
     return false;
@@ -332,7 +332,7 @@ switch (command) {
     }
 
     try {
-      const qmdRes = execSync(`qmd search "${query || 'memory'}"`, { encoding: 'utf8', cwd: WORKSPACE_ROOT });
+      const qmdRes = execFileSync('qmd', ['search', query || 'memory'], { encoding: 'utf8', cwd: WORKSPACE_ROOT });
       console.log('--- QMD Vector RAG Results ---');
       console.log(qmdRes);
     } catch (e) {
@@ -340,7 +340,7 @@ switch (command) {
       const logFiles = fs.readdirSync(LOGS_DIR).filter(f => f.endsWith('.md'));
       for (const f of logFiles) {
         const content = fs.readFileSync(path.join(LOGS_DIR, f), 'utf8');
-        if (content.toLowerCase().includes(query.toLowerCase())) {
+        if (!query || content.toLowerCase().includes(query.toLowerCase())) {
           console.log(`Found match in ${f}`);
         }
       }
