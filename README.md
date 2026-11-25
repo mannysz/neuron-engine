@@ -1,6 +1,6 @@
 # neuron-engine
 
-A local-first persistent memory CLI for AI coding agents. It works with **Claude Code**, **OpenAI Codex CLI**, **`pi`**, **Antigravity (`agy`)**, or any agent that can run shell commands.
+A local-first persistent memory CLI for AI coding agents. Use whichever harness and model you want (**Claude Code**, **OpenAI Codex CLI**, **`pi`**, **Antigravity (`agy`)**), and they all share the exact same project brain.
 
 ## What it is
 
@@ -18,22 +18,36 @@ Memory is organized into three simple layers inside `./.memory/`:
 
 ## Install
 
-### 1. Install the CLI
+Pick your harness:
 
+### Claude Code
 ```bash
-git clone https://github.com/mannysz/neuron-engine.git ~/.local/share/neuron-engine
-mkdir -p ~/.local/bin
-ln -sf ~/.local/share/neuron-engine/bin/neuron ~/.local/bin/neuron
+claude plugin marketplace add mannysz/neuron-engine
+claude plugin install neuron-engine@neuron-engine
+```
+*(Or inside a Claude Code session: `/plugin marketplace add mannysz/neuron-engine` then `/plugin install neuron-engine@neuron-engine`.)*
+
+### OpenAI Codex CLI
+```bash
+codex plugin marketplace add mannysz/neuron-engine
+codex plugin add neuron-engine@neuron-engine
 ```
 
-Make sure `~/.local/bin` is in your `PATH`, then run `neuron help` to verify.
+### `pi` Coding Agent
+```bash
+pi install git:github.com/mannysz/neuron-engine
+```
 
-### 2. Connect your coding agent
+### Antigravity (`agy`)
+```bash
+agy plugin install https://github.com/mannysz/neuron-engine
+```
 
-* **Claude Code:** Copy [`integrations/claude-code/CLAUDE.md`](integrations/claude-code/CLAUDE.md) into your `CLAUDE.md`. To log turns automatically, add the `Stop` hook from [`integrations/claude-code/settings.json`](integrations/claude-code/settings.json) to `.claude/settings.json`.
-* **OpenAI Codex CLI:** Copy [`integrations/codex/AGENTS.md`](integrations/codex/AGENTS.md) into your repository's `AGENTS.md`.
-* **`pi` Coding Agent:** Run `pi install git:github.com/mannysz/neuron-engine`.
-* **Antigravity (`agy`):** Run `agy plugin install https://github.com/mannysz/neuron-engine`.
+### Standalone CLI (optional, for direct terminal use)
+```bash
+npm install -g git+https://github.com/mannysz/neuron-engine.git
+```
+Verify with `neuron help`.
 
 ## Basic commands
 
