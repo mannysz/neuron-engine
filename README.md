@@ -18,7 +18,13 @@ Memory is organized into three simple layers inside `./.memory/`:
 
 ## Install
 
-Pick your harness:
+### Quickest (works with any agent via `skills`)
+```bash
+npx skills add mannysz/neuron-engine -g
+```
+Installs the `neuron-engine` skill and its bundled zero-dependency CLI across Claude Code, Codex, Antigravity, Cursor, Windsurf, and OpenCode.
+
+### Harness-native plugins (adds auto-logging hooks)
 
 ### Claude Code
 ```bash

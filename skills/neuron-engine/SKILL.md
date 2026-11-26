@@ -12,6 +12,17 @@ description: CRITICAL MEMORY ENGINE. Read this skill on session start or when as
 
 ---
 
+## Running `neuron`
+
+* If `neuron` is installed on your `PATH`, invoke it directly: `neuron <command>`.
+* If installed via `npx skills add mannysz/neuron-engine` (without the global CLI), invoke the bundled zero-dependency script inside this skill directory:
+  ```bash
+  node "<this-skill-dir>/scripts/neuron.js" <command>
+  ```
+  Both execute the exact same CLI against the current project's `./.memory/` directory.
+
+---
+
 ## When to Trigger Commands & Switch Contexts
 
 ### 1. On Session Start (Mandatory)
